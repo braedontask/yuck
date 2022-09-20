@@ -9,6 +9,7 @@
  */
 
 import React, {useState, type PropsWithChildren} from 'react';
+import Joystick from './components/Joystick';
 import {
   Button,
   SafeAreaView,
@@ -48,7 +49,7 @@ interface State {
 class App extends React.Component<Props, State> {
 
   private audioRecorderPlayer: AudioRecorderPlayer;
-  
+
   constructor(props: Props) {
     super(props);
     this.state = { isRecording: false };
@@ -63,18 +64,18 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView>
-        <Button
-          onPress={this.toggleRecording}
-          title={this.state.isRecording ? 'stop' : 'record'}
-          color='#841584'
-        />
-      </SafeAreaView>
+      <View style={styles.container}>
+        <Joystick/>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#B6F9C9',
+    flex: 1,
+  },
 });
 
 export default App;
