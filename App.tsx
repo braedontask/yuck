@@ -46,16 +46,19 @@ interface State {
 };
 
 class App extends React.Component<Props, State> {
+
+  private audioRecorderPlayer: AudioRecorderPlayer;
+  
   constructor(props: Props) {
     super(props);
+    this.state = { isRecording: false };
+    this.audioRecorderPlayer = new AudioRecorderPlayer();
   }
 
-  state: State = {
-    isRecording: false,
-  };
-
   toggleRecording = () => {
-    this.state.isRecording = !this.state.isRecording;
+    this.setState(previous => {
+      return { isRecording: !previous.isRecording };
+    });
   };
 
   render() {
