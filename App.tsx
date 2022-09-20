@@ -12,12 +12,7 @@ import React, {useState, type PropsWithChildren} from 'react';
 import Joystick from './components/Joystick';
 import {
   Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
@@ -30,14 +25,6 @@ import AudioRecorderPlayer, {
   PlayBackType,
   RecordBackType,
 } from 'react-native-audio-recorder-player';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 interface Props {
 };
@@ -56,7 +43,16 @@ class App extends React.Component<Props, State> {
     this.audioRecorderPlayer = new AudioRecorderPlayer();
   }
 
-  toggleRecording = () => {
+  private startRecording = () => {
+    console.log('starting!');
+  }
+
+  private stopRecording = () => {
+    console.log('stopping!');
+  }
+
+  private toggleRecording = () => {
+    this.state.isRecording ? this.stopRecording() : this.startRecording();
     this.setState(previous => {
       return { isRecording: !previous.isRecording };
     });

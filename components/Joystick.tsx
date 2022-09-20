@@ -20,7 +20,7 @@ const Joystick = () => {
             <Text> Mom, look, I am a circle! </Text>
         </View>
       </TouchableWithoutFeedback>
-)
+    )
 }
 
 export default Joystick;
