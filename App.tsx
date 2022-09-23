@@ -13,6 +13,10 @@ import Joystick from './components/Joystick/Joystick';
 import {Alert, StyleSheet, View} from 'react-native';
 
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import {
+  SwipeClassification,
+  SwipeHandlersType,
+} from './components/Joystick/JoystickHelper';
 
 interface Props {}
 
@@ -44,10 +48,25 @@ class App extends React.Component<Props, State> {
     });
   };
 
+  private defaultSwipeHandlerBuilder = (direction: string) => {
+    return () => {
+      Alert.alert(`yay a ${direction} swipe has been handled`);
+    };
+  };
+
+  private swipeHandlers: SwipeHandlersType = {
+    [SwipeClassification.LeftSwipe]: this.defaultSwipeHandlerBuilder('left'),
+    [SwipeClassification.RightSwipe]: this.defaultSwipeHandlerBuilder('right'),
+    [SwipeClassification.DownSwipe]: this.defaultSwipeHandlerBuilder('down'),
+    [SwipeClassification.UpSwipe]: this.defaultSwipeHandlerBuilder('up'),
+    [SwipeClassification.UnclassifiedSwipe]:
+      this.defaultSwipeHandlerBuilder('unclassified'),
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Joystick onButtonPress={() => {}} />
+        <Joystick onButtonPress={() => {}} swipeHandlers={this.swipeHandlers} />
       </View>
     );
   }

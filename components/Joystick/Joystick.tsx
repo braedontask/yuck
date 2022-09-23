@@ -5,12 +5,14 @@ import {
   PanResponder,
   GestureResponderEvent,
   PanResponderGestureState,
-  Alert,
 } from 'react-native';
 import {useRef} from 'react';
+import React from 'react';
+import {JoystickHelper, SwipeHandlersType} from './JoystickHelper';
 
 interface JoystickPropTypes {
   onButtonPress: () => void;
+  swipeHandlers: SwipeHandlersType;
 }
 
 const {width, height} = Dimensions.get('window');
@@ -19,7 +21,8 @@ const START_RADIUS = 0.45;
 const DEPRESSED_RADIUS = 0.5;
 
 const Joystick = (props: JoystickPropTypes) => {
-  const {onButtonPress} = props;
+  const {onButtonPress, swipeHandlers} = props;
+  const joystickHelper = new JoystickHelper(width, height);
   const pan = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
@@ -60,9 +63,12 @@ const Joystick = (props: JoystickPropTypes) => {
           toValue: {x: 0, y: 0},
           useNativeDriver: false,
         }).start();
-        Alert.alert(
-          `${gestureState.dx.toString()}, ${gestureState.dy.toString()}`,
+        const classification = joystickHelper.classify(
+          gestureState.dx,
+          gestureState.dy,
         );
+        // calls the handler given by the classification
+        swipeHandlers[classification]();
       },
     }),
   ).current;
