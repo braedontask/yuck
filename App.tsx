@@ -128,10 +128,6 @@ class App extends React.Component<Props, State> {
         ),
         duration: this.audioRecorderPlayer.mmssss(Math.floor(e.duration)),
       });
-
-      if (e.currentPosition === e.duration) {
-        this.togglePlaying();
-      }
     });
 
     const msg = await this.audioRecorderPlayer.startPlayer();
