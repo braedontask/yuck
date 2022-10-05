@@ -12,6 +12,7 @@ import {JoystickHelper, SwipeHandlersType} from './JoystickHelper';
 
 interface JoystickPropTypes {
   onButtonPress: () => void;
+  onRelease: () => void;
   swipeHandlers: SwipeHandlersType;
 }
 
@@ -21,7 +22,7 @@ const START_RADIUS = 0.45;
 const DEPRESSED_RADIUS = 0.5;
 
 const Joystick = (props: JoystickPropTypes) => {
-  const {onButtonPress, swipeHandlers} = props;
+  const {onButtonPress, onRelease, swipeHandlers} = props;
   const joystickHelper = new JoystickHelper(width, height);
   const pan = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
@@ -68,6 +69,7 @@ const Joystick = (props: JoystickPropTypes) => {
           gestureState.dy,
         );
         // calls the handler given by the classification
+        onRelease();
         swipeHandlers[classification]();
       },
     }),

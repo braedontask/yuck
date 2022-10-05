@@ -59,6 +59,10 @@ class App extends React.Component<Props, State> {
   }
 
   private startRecording = async () => {
+    if (this.state.isRecording) {
+      // only start recording if we are not currently recording
+      return;
+    }
     console.log('start recording!');
 
     const audioSet: AudioSet = {
@@ -71,6 +75,7 @@ class App extends React.Component<Props, State> {
 
     this.audioRecorderPlayer.addRecordBackListener((e: RecordBackType) => {
       this.setState({
+        isRecording: true,
         recordSecs: e.currentPosition,
         recordTime: this.audioRecorderPlayer.mmssss(
           Math.floor(e.currentPosition),
@@ -88,7 +93,14 @@ class App extends React.Component<Props, State> {
   };
 
   private stopRecording = async () => {
+    if (!this.state.isRecording) {
+      // only stop recording if we are currently recording
+      return;
+    }
     console.log('stop recording!');
+    this.setState(_prev => {
+      return {isRecording: false};
+    });
 
     const result = await this.audioRecorderPlayer.stopRecorder();
     this.audioRecorderPlayer.removeRecordBackListener();
@@ -176,8 +188,7 @@ class App extends React.Component<Props, State> {
     [SwipeClassification.RightSwipe]: this.defaultSwipeHandlerBuilder('right'),
     [SwipeClassification.DownSwipe]: this.defaultSwipeHandlerBuilder('down'),
     [SwipeClassification.UpSwipe]: this.defaultSwipeHandlerBuilder('up'),
-    [SwipeClassification.UnclassifiedSwipe]:
-      this.defaultSwipeHandlerBuilder('unclassified'),
+    [SwipeClassification.UnclassifiedSwipe]: () => {},
   };
 
   render() {
@@ -190,7 +201,11 @@ class App extends React.Component<Props, State> {
           {'isPlaying:      ' + this.state.isPlaying + '\n'}
           {'playTime:      ' + this.state.playTime + '\n'}
         </Text>
-        <Joystick onButtonPress={() => {}} swipeHandlers={this.swipeHandlers} />
+        <Joystick
+          onButtonPress={this.startRecording}
+          onRelease={this.stopRecording}
+          swipeHandlers={this.swipeHandlers}
+        />
       </View>
     );
   }
