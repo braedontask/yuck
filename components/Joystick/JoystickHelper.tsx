@@ -26,12 +26,10 @@ export class JoystickHelper {
     this.height = height;
     this.xForgiveness = this.width * JoystickHelper.X_FORGIVENESS_RATIO;
     this.yForgiveness = this.height * JoystickHelper.Y_FORGIVENESS_RATIO;
-    console.log(this.xForgiveness, this.yForgiveness);
     this.xDisplacementThreshold =
       this.width * JoystickHelper.X_DISPLACEMENT_THRESHOLD_RATIO;
     this.yDisplacementThreshold =
       this.height * JoystickHelper.Y_DISPLACEMENT_THRESHOLD_RATIO;
-    console.log(this.xDisplacementThreshold, this.yDisplacementThreshold);
   }
 
   classify(x: number, y: number): SwipeClassification {
